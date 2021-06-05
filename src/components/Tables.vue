@@ -15,7 +15,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr><tr>
+                  <th scope="row">1</th><td v-for="(item, index) in contentLists.list" :key="index">{{contentLists.list[index]}}</td></tr><tr>
+                  <!-- <th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr><tr> -->
                   <th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr><tr>
                   <th scope="row">3</th><td>Larry</td><td>the Bird</td><td>@twitter</td>
                 </tr>
@@ -55,28 +56,39 @@
   </section>
 </template>
 
-// <script>
-// import { mdbRow, mdbCol, mdbCard, mdbView, mdbCardBody, mdbTbl } from 'mdbvue'
-
-
-// export default {
-//   name: 'Tables',
-//   components: {
-//     mdbRow,
-//     mdbCol,
-//     mdbCard,
-//     mdbView,
-//     mdbCardBody,
-//     mdbTbl
-//   },
-//   data () {
-//     return {
-      
-//     }
-//   }
-// }
-// </script>
-
+<script>
+import { mdbRow, mdbCol, mdbCard, mdbView, mdbCardBody, mdbTbl } from 'mdbvue'
+export const baseURL = "http://192.168.0.105:8080/"
+export default {
+  name: 'Tables',
+  components: {
+    mdbRow,
+    mdbCol,
+    mdbCard,
+    mdbView,
+    mdbCardBody,
+    mdbTbl
+  },
+  data () {
+    return {  
+      // contentLists: {list:['bom','zs','lisi']}
+      contentLists:[]
+    }
+  },
+  methods: {
+      getData: function () {
+        let api = 'http://192.168.0.105:8080/brand/listAll';
+        //此处推荐使用箭头函数。
+        this.$http.get(api).then((res)=>{
+          this.contentLists = res.body.data;
+        });
+      }
+    },
+    mounted() {
+      this.getData();
+    }
+  }
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .card.card-cascade .view.gradient-card-header {
